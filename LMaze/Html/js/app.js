@@ -168,7 +168,7 @@
 		};
 		
 		window.next = function () {
-            model.step();
+            model.step(1);
         };
 
 		window.rotate = function () {
