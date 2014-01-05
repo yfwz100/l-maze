@@ -184,7 +184,7 @@
             for (var i = 0; i <= step; i++) {
                 score += i;
             };
-            console.log(score);
+            mark.innerHTML = score;
         }
 
 
