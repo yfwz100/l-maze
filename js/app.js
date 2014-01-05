@@ -6,7 +6,8 @@
     var POS = [
             [1 / 3, 0], [2 / 3, 0], [1, 1 / 3], [1, 2 / 3], [2 / 3, 1], [1 / 3, 1], [0, 2 / 3], [0, 1 / 3]
         ],
-        BOX_SIZE = 50;
+        BOX_SIZE = 50,
+        score = 0;
 		
     lmaze.MazeTile.prototype.draw = function (ctx) {
         var x = this.pos[0],
@@ -105,10 +106,12 @@
     };
 
     window.onload = function () {
-        var doc, body, model, canvas, nextBtn, rotateBtn;
+        var doc, body, model, canvas, nextBtn, rotateBtn, restartBtn, mark;
 		
         doc = document;
 		body = doc.body;
+
+        mark = doc.getElementById('mark');
 
         canvas = doc.getElementById('canvas');
         canvas.width = BOX_SIZE * 10;
@@ -119,15 +122,17 @@
             case 'rotate':
                 break;
             case 'step':
+                window.scoring(event.step);
                 break;
             case 'over':
+                alert("game over");
                 break;
             }
             this.refresh();
 			//if (window.external && window.external.notify) {
 				//window.external.notify("aaaa");
 			//}
-			window.external.notify(event.type);
+			// window.external.notify(event.type);
         });
 		
         model.refresh = function () {
@@ -168,12 +173,20 @@
 		};
 		
 		window.next = function () {
-            model.step();
+            model.step(1);
         };
 
 		window.rotate = function () {
             model.rotate();
         };
+
+        window.scoring = function(step){
+            for (var i = 0; i <= step; i++) {
+                score += i;
+            };
+            console.log(score);
+        }
+
 
 		nextBtn = doc.getElementById('next');
 		if (nextBtn) {
@@ -190,6 +203,14 @@
 				event.preventDefault();
 			});
 		}
+
+        restartBtn = doc.getElementById('restart');
+        if(restartBtn){
+            restartBtn.addEventListener('click',function (event) {
+                location.reload();
+                event.preventDefault();
+            });
+        }
 
         model.init();
         model.refresh();
